@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
+﻿using System.Web.Http;
+using TestDiffedBinaries.Api.Repositories;
 
 namespace TestDiffedBinaries.Api.Controllers.Version1
 {
-    [RoutePrefix("api/v1/diff")]
-    public class RightV1Controller : ApiController
+    [Route("api/v1/diff/right")]
+    public class RightV1Controller : SideV1Controller
     {
-        [Route("right")]
-        public IHttpActionResult Get()
+        protected override DataRepositoryType StorageType
         {
-            return Ok("right");
+            get
+            {
+                return DataRepositoryType.Right;
+            }
         }
     }
 }
