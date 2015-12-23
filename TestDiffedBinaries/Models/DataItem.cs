@@ -2,9 +2,9 @@
 
 namespace TestDiffedBinaries.Api.Models
 {
-    public class DataItem
+    public class RequestData
     {
-        public Guid Id
+        public Guid? Id
         {
             get;
             set;

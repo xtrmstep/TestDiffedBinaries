@@ -11,6 +11,8 @@ namespace TestDiffedBinaries.Api.Models
             set;
         }
 
+        public string StatusMessage { get; set; }
+
         public List<Tuple<int, int>> Mismatches
         {
             get;

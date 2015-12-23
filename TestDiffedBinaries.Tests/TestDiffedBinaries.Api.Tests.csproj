@@ -78,12 +78,16 @@
     <Compile Include="Controllers\LeftV1ControllerTests.cs" />
     <Compile Include="Controllers\RightV1ControllerTests.cs" />
     <Compile Include="Controllers\DiffV1ControllerTests.cs" />
+    <Compile Include="HttpServerCollection.cs" />
     <Compile Include="HttpServerFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\JsonSerializerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TestDiffedBinaries\TestDiffedBinaries.Api.csproj">
@@ -94,9 +98,7 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

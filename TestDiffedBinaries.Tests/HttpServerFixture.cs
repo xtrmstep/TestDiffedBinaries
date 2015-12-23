@@ -16,6 +16,7 @@ namespace TestDiffedBinaries.Api.Tests
             HttpConfiguration config = new HttpConfiguration();
             WebApiApplication.Configure(config);
             config.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
+            config.EnsureInitialized();
             httpServer = new HttpServer(config);
         }
 
@@ -46,9 +47,53 @@ namespace TestDiffedBinaries.Api.Tests
             return request;
         }
 
+        internal HttpResponseMessage PostJson(string url, string json)
+        {
+            using (var client = CreateServer())
+            {
+                using (HttpRequestMessage request = CreateRequest(url, "text/plain", HttpMethod.Post))
+                {
+                    request.Content = new ObjectContent(typeof(string), json, new JsonMediaTypeFormatter());
+                    using (HttpResponseMessage response = client.SendAsync(request).Result)
+                    {
+                        return response;
+                    }
+                }
+            }
+        }
+
         public HttpClient CreateServer()
         {
             return new HttpClient(httpServer);
+        }
+
+        public HttpResponseMessage GetJson(string url)
+        {
+            using (var client = CreateServer())
+            {
+                using (HttpRequestMessage request = CreateRequest(url, "text/plain", HttpMethod.Get))
+                {
+                    using (HttpResponseMessage response = client.SendAsync(request).Result)
+                    {
+                        return response;
+                    }
+                }
+            }
+        }
+
+        public HttpResponseMessage GetJson(string url, string json)
+        {
+            using (var client = CreateServer())
+            {
+                using (HttpRequestMessage request = CreateRequest(url, "text/plain", HttpMethod.Get))
+                {
+                    request.Content = new ObjectContent(typeof(string), json, new JsonMediaTypeFormatter());
+                    using (HttpResponseMessage response = client.SendAsync(request).Result)
+                    {
+                        return response;
+                    }
+                }
+            }
         }
     }
 }
