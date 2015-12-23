@@ -3,8 +3,18 @@ using System.Collections.Concurrent;
 
 namespace TestDiffedBinaries.Api.Repositories
 {
-    public class DataRepository
+    /// <summary>
+    /// Simplified data storage which operates with chunks of paired sequences
+    /// </summary>
+    /// <remarks>
+    /// Each instance of the repository can work only with one item from a chunk 'left' or 'right'
+    /// </remarks>
+    public class DataRepository : IDataRepository
     {
+        #region static storage
+        /*******************************************************************
+         * static storage for all server clients MUST be thread safe *
+         *******************************************************************/
         private static readonly Lazy<ConcurrentDictionary<Guid, Tuple<byte[], byte[]>>> storageLazySingleton = new Lazy<ConcurrentDictionary<Guid, Tuple<byte[], byte[]>>>(() => new ConcurrentDictionary<Guid, Tuple<byte[], byte[]>>());
 
         private static ConcurrentDictionary<Guid, Tuple<byte[], byte[]>> Storage
@@ -15,6 +25,14 @@ namespace TestDiffedBinaries.Api.Repositories
             }
         }
 
+        public static Tuple<byte[], byte[]> PickSlot(Guid id)
+        {
+            if (Storage.ContainsKey(id))
+                return Storage[id];
+            return null;
+        }
+        #endregion
+
         private readonly DataRepositoryType type;
         private readonly Guid slotId;
 
@@ -22,14 +40,7 @@ namespace TestDiffedBinaries.Api.Repositories
         {
             this.type = type;
             this.slotId = slotId;
-        }
-
-        public static Tuple<byte[], byte[]> PickSlot(Guid id)
-        {
-            if (Storage.ContainsKey(id))
-                return Storage[id];
-            return null;
-        }
+        }        
 
         public byte[] Get()
         {
@@ -49,12 +60,15 @@ namespace TestDiffedBinaries.Api.Repositories
             byte[] right = type == DataRepositoryType.Right ? bytes : existingSlot != null ? existingSlot.Item2 : null;
             Tuple<byte[], byte[]> slot = new Tuple<byte[], byte[]>(left, right);
 
+            // slot with Id may be already created (eg, in parallel), if so, then update it
             if (Storage.TryAdd(slotId, slot) == false)
                 Storage.TryUpdate(slotId, slot, existingSlot);
         }
 
         public void Delete()
         {
+            // deletion does not remove a key, it just sets chunk item to Null
+
             if (Storage.ContainsKey(slotId))
             {
                 Tuple<byte[], byte[]> slot;

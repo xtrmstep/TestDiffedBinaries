@@ -4,7 +4,7 @@ using System.Net;
 using System.Net.Http;
 using TestDiffedBinaries.Api.Models;
 using TestDiffedBinaries.Api.Repositories;
-using TestDiffedBinaries.Api.Tests.Utilities;
+using TestDiffedBinaries.Api.Utilities;
 using Xunit;
 
 namespace TestDiffedBinaries.Api.Tests

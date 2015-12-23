@@ -7,7 +7,7 @@ namespace TestDiffedBinaries
     {
         protected void Application_Start()
         {
-            GlobalConfiguration.Configure(WebApiConfig.Register);
+            Configure();
         }
 
         public static void Configure(HttpConfiguration config = null)

@@ -1,40 +1,37 @@
-﻿using System;
-using System.Web.Http;
-using TestDiffedBinaries.Api.Models;
+﻿using System.Web.Http;
 using TestDiffedBinaries.Api.Repositories;
-using TestDiffedBinaries.Api.Tests.Utilities;
+using TestDiffedBinaries.Api.Utilities;
 
 namespace TestDiffedBinaries.Api.Controllers.Version1
 {
     [Route("api/v1/diff/left")]
-    public class LeftV1Controller : StorageApiController
+    public class LeftV1Controller : ApiController
     {
-        protected override DataRepositoryType StorageType
+        private readonly StorageHelper dbHelper;
+
+        public LeftV1Controller()
         {
-            get
-            {
-                return DataRepositoryType.Left;
-            }
+            dbHelper = new StorageHelper(this, DataRepositoryType.Left);
         }
 
         public IHttpActionResult Get([FromBody]string slotId)
         {
-            return GetData(slotId);            
+            return dbHelper.GetData(slotId);            
         }
 
         public IHttpActionResult Post([FromBody]string json)
         {
-            return AddData(json);            
+            return dbHelper.AddData(json);            
         }
 
         public IHttpActionResult Put([FromBody]string json)
         {
-            return UpdateData(json);
+            return dbHelper.UpdateData(json);
         }
 
         public IHttpActionResult Delete([FromBody]string slotId)
         {
-            return DeleteData(slotId);
+            return dbHelper.DeleteData(slotId);
         }
     }
 }

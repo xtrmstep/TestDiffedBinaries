@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TestDiffedBinaries.Api.Models;
+using TestDiffedBinaries.Api.Utilities;
 using Xunit;
 
 namespace TestDiffedBinaries.Api.Tests.Utilities

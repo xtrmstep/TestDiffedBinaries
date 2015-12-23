@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Web.Http;
 using TestDiffedBinaries.Api.Repositories;
-using TestDiffedBinaries.Api.Tests.Utilities;
 using TestDiffedBinaries.Api.Utilities;
 
 namespace TestDiffedBinaries.Api.Controllers.Version1
 {
     [Route("api/v1/diff")]
-    public class DiffV1Controller : BaseApiController
+    public class DiffV1Controller : ApiController
     {
         public IHttpActionResult Get([FromBody]string slotId)
         {

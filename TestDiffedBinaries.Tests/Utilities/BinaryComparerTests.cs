@@ -16,8 +16,7 @@ namespace TestDiffedBinaries.Api.Tests.Utilities
         {
             var actual = BinaryComparer.Compare(new Tuple<byte[], byte[]>(null, null));
 
-            Assert.True(actual.AreEqual);
-            Assert.Equal("equal", actual.StatusMessage);
+            Assert.Equal(EqualStatus.Equal, actual.AreEqual);
         }
 
         [Fact(DisplayName = "BinaryComparer null and non-null are not equal")]
@@ -25,8 +24,7 @@ namespace TestDiffedBinaries.Api.Tests.Utilities
         {
             var actual = BinaryComparer.Compare(new Tuple<byte[], byte[]>(null, new byte[] { 1, 2, 3 }));
 
-            Assert.False(actual.AreEqual);
-            Assert.Equal("size is not equal", actual.StatusMessage);
+            Assert.Equal(EqualStatus.SizeNotEqual, actual.AreEqual);
         }
 
         [Fact(DisplayName = "BinaryComparer items with different size are not equal")]
@@ -34,8 +32,7 @@ namespace TestDiffedBinaries.Api.Tests.Utilities
         {
             var actual = BinaryComparer.Compare(new Tuple<byte[], byte[]>(new byte[] { 1, 2, 3, 4 }, new byte[] { 1, 2, 3 }));
 
-            Assert.False(actual.AreEqual);
-            Assert.Equal("size is not equal", actual.StatusMessage);
+            Assert.Equal(EqualStatus.SizeNotEqual, actual.AreEqual);
         }
 
         [Fact(DisplayName = "BinaryComparer returns mismatch info")]
@@ -43,8 +40,7 @@ namespace TestDiffedBinaries.Api.Tests.Utilities
         {
             var actual = BinaryComparer.Compare(new Tuple<byte[], byte[]>(new byte[] { 1, 2, 3, 4 }, new byte[] { 1, 2, 3, 5 }));
 
-            Assert.False(actual.AreEqual);
-            Assert.Equal("not equal", actual.StatusMessage);
+            Assert.Equal(EqualStatus.NotEqual, actual.AreEqual);
             Assert.Equal(1, actual.Mismatches.Count);
             Assert.Equal(3, actual.Mismatches[0].Item1);
             Assert.Equal(1, actual.Mismatches[0].Item2);

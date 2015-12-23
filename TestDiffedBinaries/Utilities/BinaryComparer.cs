@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Web;
 using TestDiffedBinaries.Api.Models;
 
 namespace TestDiffedBinaries.Api.Utilities
@@ -14,16 +13,19 @@ namespace TestDiffedBinaries.Api.Utilities
             var left = data.Item1;
             var right = data.Item2;
 
-            if (left == null && right == null) return new DiffInfo { AreEqual = true, StatusMessage = "equal" };
+            #region quick checks
 
-            if (left == null || right == null || left.Length != right.Length) return new DiffInfo { AreEqual = false, StatusMessage = "size is not equal" };
+            if (left == null && right == null) return new DiffInfo { AreEqual = EqualStatus.Equal };
 
-            if (left.SequenceEqual(right)) return new DiffInfo { AreEqual = true, StatusMessage = "equal" };
+            if (left == null || right == null || left.Length != right.Length) return new DiffInfo { AreEqual = EqualStatus.SizeNotEqual };
+
+            if (left.SequenceEqual(right)) return new DiffInfo { AreEqual = EqualStatus.Equal }; 
+            
+            #endregion
 
             var notEqual = new DiffInfo
             {
-                AreEqual = false,
-                StatusMessage = "not equal"
+                AreEqual = EqualStatus.NotEqual
             };
 
             notEqual.Mismatches = FindAllMismatches(left, right);
@@ -37,6 +39,11 @@ namespace TestDiffedBinaries.Api.Utilities
             var result = new List<Tuple<int, int>>();
             int length = 0;
             int pos = -1;
+
+            // go through the sequence and count pos & length of mismatches
+
+            #region find mismatches
+
             for (int i = 0; i < left.Length; i++)
             {
                 if (left[i] != right[i])
@@ -50,7 +57,11 @@ namespace TestDiffedBinaries.Api.Utilities
                     pos = -1;
                     length = 0;
                 }
-            }
+            } 
+            
+            #endregion
+
+            // after the loop some info might not be stored, so add it
             if (length > 0)
             {
                 result.Add(new Tuple<int, int>(pos, length));

@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
+﻿using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using TestDiffedBinaries.Api.Models;
 
-namespace TestDiffedBinaries.Api.Tests.Utilities
+namespace TestDiffedBinaries.Api.Utilities
 {
+    /// <summary>
+    /// Wrapper for JSON.NET
+    /// </summary>
     public static class JsonSerializer
     {
         public static string ToJson<T>(this T data)

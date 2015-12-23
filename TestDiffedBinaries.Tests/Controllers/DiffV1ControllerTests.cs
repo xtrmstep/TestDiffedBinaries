@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using TestDiffedBinaries.Api.Models;
-using TestDiffedBinaries.Api.Tests.Utilities;
+using TestDiffedBinaries.Api.Utilities;
 using Xunit;
 
 namespace TestDiffedBinaries.Api.Tests
@@ -22,6 +22,7 @@ namespace TestDiffedBinaries.Api.Tests
             var id = Guid.NewGuid();
 
             #region Arrange data
+            
             var leftData = new RequestData { Id = id, Content = new byte[] { 1, 2, 3, 5, 4 } };
             var rightData = new RequestData { Id = id, Content = new byte[] { 1, 2, 3, 4, 5 } };
             using (HttpResponseMessage response = httpServerFixture.PostJson("api/v1/diff/left", leftData.ToJson()))
@@ -48,7 +49,7 @@ namespace TestDiffedBinaries.Api.Tests
             }
             #endregion
 
-            Assert.Equal(@"{""AreEqual"":false,""StatusMessage"":""not equal"",""Mismatches"":[{""Item1"":3,""Item2"":2}]}", actual);
+            Assert.Equal(@"{""AreEqual"":1,""Mismatches"":[{""Item1"":3,""Item2"":2}]}", actual);
         }
     }
 }
