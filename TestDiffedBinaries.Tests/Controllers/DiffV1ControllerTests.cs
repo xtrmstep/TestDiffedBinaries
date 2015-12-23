@@ -37,19 +37,18 @@ namespace TestDiffedBinaries.Api.Tests
             #endregion
 
             #region Action
+            string actual = null;
             using (HttpResponseMessage response = httpServerFixture.GetJson("api/v1/diff", id.ToJson()))
             {
                 Assert.NotNull(response);
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
                 var content = response.Content as ObjectContent<string>;
-                var actual = content.Value as string;
-
-                
+                actual = content.Value as string;                
             }
             #endregion
 
-
+            Assert.Equal(@"{""AreEqual"":false,""StatusMessage"":""not equal"",""Mismatches"":[{""Item1"":3,""Item2"":2}]}", actual);
         }
     }
 }
