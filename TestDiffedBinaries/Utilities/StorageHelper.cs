@@ -34,7 +34,7 @@ namespace TestDiffedBinaries.Api.Utilities
             {
                 return new NotFoundResult(ctrl);
             }
-            return new OkNegotiatedContentResult<byte[]>(data, ctrl);
+            return new OkNegotiatedContentResult<string>(data.ToJson(), ctrl);
         }
 
         public IHttpActionResult AddData(string json)

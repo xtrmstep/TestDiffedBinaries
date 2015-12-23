@@ -22,7 +22,7 @@ namespace TestDiffedBinaries.Api.Tests
             var id = Guid.NewGuid();
 
             #region Arrange data
-            
+
             var leftData = new RequestData { Id = id, Content = new byte[] { 1, 2, 3, 5, 4 } };
             var rightData = new RequestData { Id = id, Content = new byte[] { 1, 2, 3, 4, 5 } };
             using (HttpResponseMessage response = httpServerFixture.PostJson("api/v1/diff/left", leftData.ToJson()))
@@ -45,7 +45,7 @@ namespace TestDiffedBinaries.Api.Tests
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
                 var content = response.Content as ObjectContent<string>;
-                actual = content.Value as string;                
+                actual = content.Value as string;
             }
             #endregion
 

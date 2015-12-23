@@ -43,10 +43,10 @@ namespace TestDiffedBinaries.Api.Tests
             {
                 Assert.NotNull(response);
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-                var content = response.Content as ObjectContent<byte[]>;
+                var content = response.Content as ObjectContent<string>;
                 Assert.NotNull(content);
-                var actual = content.Value as byte[];
-                Assert.True(Enumerable.SequenceEqual(expected, actual));
+                var actual = content.Value as string;
+                Assert.True(Enumerable.SequenceEqual(expected, actual.FromJson<byte[]>()));
             }
         }
 

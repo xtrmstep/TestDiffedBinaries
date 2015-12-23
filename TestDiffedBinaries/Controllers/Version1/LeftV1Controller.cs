@@ -1,4 +1,5 @@
 ﻿using System.Web.Http;
+using TestDiffedBinaries.Api.Controllers.Filters;
 using TestDiffedBinaries.Api.Repositories;
 using TestDiffedBinaries.Api.Utilities;
 
@@ -14,6 +15,7 @@ namespace TestDiffedBinaries.Api.Controllers.Version1
             dbHelper = new StorageHelper(this, DataRepositoryType.Left);
         }
 
+        [Caching]
         public IHttpActionResult Get([FromBody]string slotId)
         {
             return dbHelper.GetData(slotId);            

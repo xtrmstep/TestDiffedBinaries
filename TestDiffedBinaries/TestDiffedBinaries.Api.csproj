@@ -83,13 +83,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\Filters\CachingActionFilterAttribute.cs" />
     <Compile Include="Controllers\Version1\DiffV1Controller.cs" />
     <Compile Include="Controllers\Version1\RightV1Controller.cs" />
     <Compile Include="Controllers\Version1\LeftV1Controller.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\DataItem.cs" />
+    <Compile Include="Models\RequestData.cs" />
     <Compile Include="Models\DiffInfo.cs" />
     <Compile Include="Models\EqualStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
