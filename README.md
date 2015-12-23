@@ -1,4 +1,4 @@
-AppVeyor ![Build status](https://ci.appveyor.com/api/projects/status/jpicnj57ksvoo86f/branch/master?svg=true)
+AppVeyor [![Build status](https://ci.appveyor.com/api/projects/status/jpicnj57ksvoo86f/branch/master?svg=true)](https://ci.appveyor.com/project/xtrmstep/testdiffedbinaries/history)
 
 # Features & Usage
 * The service compares two byte arrays. It checks 3 conditions: 1) if they equal, 2) have different size and 3) mismatching subsequences (only position & length) in the second (right) sequence comparing to the 1st one.
