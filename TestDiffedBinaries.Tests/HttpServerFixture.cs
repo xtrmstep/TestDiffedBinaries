@@ -47,21 +47,6 @@ namespace TestDiffedBinaries.Api.Tests
             return request;
         }
 
-        internal HttpResponseMessage PostJson(string url, string json)
-        {
-            using (var client = CreateServer())
-            {
-                using (HttpRequestMessage request = CreateRequest(url, "text/plain", HttpMethod.Post))
-                {
-                    request.Content = new ObjectContent(typeof(string), json, new JsonMediaTypeFormatter());
-                    using (HttpResponseMessage response = client.SendAsync(request).Result)
-                    {
-                        return response;
-                    }
-                }
-            }
-        }
-
         public HttpClient CreateServer()
         {
             return new HttpClient(httpServer);
@@ -69,29 +54,59 @@ namespace TestDiffedBinaries.Api.Tests
 
         public HttpResponseMessage GetJson(string url)
         {
-            using (var client = CreateServer())
+            using (HttpRequestMessage request = CreateRequest(url, "text/plain", HttpMethod.Get))
             {
-                using (HttpRequestMessage request = CreateRequest(url, "text/plain", HttpMethod.Get))
+                using (HttpResponseMessage response = CreateServer().SendAsync(request).Result)
                 {
-                    using (HttpResponseMessage response = client.SendAsync(request).Result)
-                    {
-                        return response;
-                    }
+                    return response;
                 }
             }
         }
 
         public HttpResponseMessage GetJson(string url, string json)
         {
-            using (var client = CreateServer())
+            using (HttpRequestMessage request = CreateRequest(url, "text/plain", HttpMethod.Get))
             {
-                using (HttpRequestMessage request = CreateRequest(url, "text/plain", HttpMethod.Get))
+                request.Content = new ObjectContent(typeof(string), json, new JsonMediaTypeFormatter());
+                using (HttpResponseMessage response = CreateServer().SendAsync(request).Result)
                 {
-                    request.Content = new ObjectContent(typeof(string), json, new JsonMediaTypeFormatter());
-                    using (HttpResponseMessage response = client.SendAsync(request).Result)
-                    {
-                        return response;
-                    }
+                    return response;
+                }
+            }
+        }
+
+        public HttpResponseMessage PostJson(string url, string json)
+        {
+            using (HttpRequestMessage request = CreateRequest(url, "text/plain", HttpMethod.Post))
+            {
+                request.Content = new ObjectContent(typeof(string), json, new JsonMediaTypeFormatter());
+                using (HttpResponseMessage response = CreateServer().SendAsync(request).Result)
+                {
+                    return response;
+                }
+            }
+        }
+
+        public HttpResponseMessage PutJson(string url, string json)
+        {
+            using (HttpRequestMessage request = CreateRequest(url, "text/plain", HttpMethod.Put))
+            {
+                request.Content = new ObjectContent(typeof(string), json, new JsonMediaTypeFormatter());
+                using (HttpResponseMessage response = CreateServer().SendAsync(request).Result)
+                {
+                    return response;
+                }
+            }
+        }
+
+        public HttpResponseMessage DeleteJson(string url, string json)
+        {
+            using (HttpRequestMessage request = CreateRequest(url, "text/plain", HttpMethod.Delete))
+            {
+                request.Content = new ObjectContent(typeof(string), json, new JsonMediaTypeFormatter());
+                using (HttpResponseMessage response = CreateServer().SendAsync(request).Result)
+                {
+                    return response;
                 }
             }
         }

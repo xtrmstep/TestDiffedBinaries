@@ -1,24 +1,55 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
+using TestDiffedBinaries.Api.Models;
+using TestDiffedBinaries.Api.Tests.Utilities;
 using Xunit;
 
 namespace TestDiffedBinaries.Api.Tests
 {
-    public class DiffV1ControllerTests : IClassFixture<HttpServerFixture>, IDisposable
+    public class DiffV1ControllerTests : IClassFixture<HttpServerFixture>
     {
-        private readonly HttpClient client;
         private readonly HttpServerFixture httpServerFixture;
 
         public DiffV1ControllerTests(HttpServerFixture fixture)
         {
             httpServerFixture = fixture;
-            client = httpServerFixture.CreateServer();
         }
 
-        public void Dispose()
+        [Fact(DisplayName = "GET return diff between two byte[]")]
+        public void Should_return_diffs_between_two_byteArrays()
         {
-            client.Dispose();
+            var id = Guid.NewGuid();
+
+            #region Arrange data
+            var leftData = new RequestData { Id = id, Content = new byte[] { 1, 2, 3, 5, 4 } };
+            var rightData = new RequestData { Id = id, Content = new byte[] { 1, 2, 3, 4, 5 } };
+            using (HttpResponseMessage response = httpServerFixture.PostJson("api/v1/diff/left", leftData.ToJson()))
+            {
+                Assert.NotNull(response);
+                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            }
+            using (HttpResponseMessage response = httpServerFixture.PostJson("api/v1/diff/right", rightData.ToJson()))
+            {
+                Assert.NotNull(response);
+                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            }
+            #endregion
+
+            #region Action
+            using (HttpResponseMessage response = httpServerFixture.GetJson("api/v1/diff", id.ToJson()))
+            {
+                Assert.NotNull(response);
+                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+                var content = response.Content as ObjectContent<string>;
+                var actual = content.Value as string;
+
+                
+            }
+            #endregion
+
+
         }
     }
 }

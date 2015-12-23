@@ -7,45 +7,34 @@ using TestDiffedBinaries.Api.Tests.Utilities;
 namespace TestDiffedBinaries.Api.Controllers.Version1
 {
     [Route("api/v1/diff/left")]
-    public class LeftV1Controller : BaseApiController
+    public class LeftV1Controller : StorageApiController
     {
-        private DataRepository storage;
-
-        public DataRepository Storage(Guid slotId)
+        protected override DataRepositoryType StorageType
         {
-            // thread-safe singleton is not necessary here, because DataRepository implements the one under the hood
-            return storage ?? (storage = new DataRepository(slotId, DataRepositoryType.Left));
+            get
+            {
+                return DataRepositoryType.Left;
+            }
         }
 
         public IHttpActionResult Get([FromBody]string slotId)
         {
-            byte[] data = Storage(Guid.Parse(slotId)).Get();
-            if (data == null)
-            {
-                return NotFound();
-            }
-            return Ok(data);
+            return GetData(slotId);            
         }
 
         public IHttpActionResult Post([FromBody]string json)
         {
-            var data = json.FromJson<RequestData>();
-            var slotId = data.Id ?? Guid.NewGuid();
-            Storage(slotId).Create(data.Content);
-            return Ok(slotId.ToString());
+            return AddData(json);            
         }
 
         public IHttpActionResult Put([FromBody]string json)
         {
-            var data = json.FromJson<RequestData>();
-            Storage(data.Id.Value).Update(data.Content);
-            return Ok();
+            return UpdateData(json);
         }
 
-        public IHttpActionResult Delete(Guid slotId)
+        public IHttpActionResult Delete([FromBody]string slotId)
         {
-            Storage(slotId).Delete();
-            return Ok();
+            return DeleteData(slotId);
         }
     }
 }

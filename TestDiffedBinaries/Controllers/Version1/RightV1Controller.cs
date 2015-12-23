@@ -5,45 +5,34 @@ using TestDiffedBinaries.Api.Repositories;
 namespace TestDiffedBinaries.Api.Controllers.Version1
 {
     [Route("api/v1/diff/right")]
-    public class RightV1Controller : BaseApiController
+    public class RightV1Controller : StorageApiController
     {
-        private DataRepository storage;
-
-        public DataRepository Storage(Guid slotId)
+        protected override DataRepositoryType StorageType
         {
-            // thread-safe singleton is not necessary here, because DataRepository implements the one under the hood
-            return storage ?? (storage = new DataRepository(slotId, DataRepositoryType.Right));
-        }
-
-        public IHttpActionResult Get(Guid slotId)
-        {
-            byte[] data = Storage(slotId).Get();
-            if (data == null)
+            get
             {
-                return NotFound();
+                return DataRepositoryType.Right;
             }
-            return Ok(data);
+        }        
+
+        public IHttpActionResult Get([FromBody]string slotId)
+        {
+            return GetData(slotId);
         }
 
-        public IHttpActionResult Post(string data, Guid? slotId)
+        public IHttpActionResult Post([FromBody]string json)
         {
-            byte[] bytes = Convert.FromBase64String(data);
-            slotId = slotId ?? Guid.NewGuid();
-            Storage(slotId.Value).Create(bytes);
-            return Ok(slotId.Value);
+            return AddData(json);
         }
 
-        public IHttpActionResult Put(Guid slotId, string data)
+        public IHttpActionResult Put([FromBody]string json)
         {
-            byte[] bytes = Convert.FromBase64String(data);
-            Storage(slotId).Update(bytes);
-            return Ok();
+            return UpdateData(json);
         }
 
-        public IHttpActionResult Delete(Guid slotId)
+        public IHttpActionResult Delete([FromBody]string slotId)
         {
-            Storage(slotId).Delete();
-            return Ok();
+            return DeleteData(slotId);
         }
     }
 }

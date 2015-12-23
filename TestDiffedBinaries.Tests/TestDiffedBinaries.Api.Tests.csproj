@@ -75,12 +75,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\LeftV1ControllerTests.cs" />
-    <Compile Include="Controllers\RightV1ControllerTests.cs" />
+    <Compile Include="Controllers\LeftRightApiTests.cs" />
     <Compile Include="Controllers\DiffV1ControllerTests.cs" />
-    <Compile Include="HttpServerCollection.cs" />
+    <Compile Include="Repositories\DataRepositoryTests.cs" />
     <Compile Include="HttpServerFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\BinaryComparerTests.cs" />
     <Compile Include="Utilities\JsonSerializerTests.cs" />
   </ItemGroup>
   <ItemGroup>

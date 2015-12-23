@@ -24,6 +24,13 @@ namespace TestDiffedBinaries.Api.Repositories
             this.slotId = slotId;
         }
 
+        public static Tuple<byte[], byte[]> PickSlot(Guid id)
+        {
+            if (Storage.ContainsKey(id))
+                return Storage[id];
+            return null;
+        }
+
         public byte[] Get()
         {
             Tuple<byte[], byte[]> slot;
@@ -36,11 +43,14 @@ namespace TestDiffedBinaries.Api.Repositories
 
         public void Create(byte[] bytes)
         {
-            byte[] left = type == DataRepositoryType.Left ? bytes : null;
-            byte[] right = type == DataRepositoryType.Right ? bytes : null;
+            var existingSlot = PickSlot(slotId);
+
+            byte[] left = type == DataRepositoryType.Left ? bytes : existingSlot != null ? existingSlot.Item1 : null;
+            byte[] right = type == DataRepositoryType.Right ? bytes : existingSlot != null ? existingSlot.Item2 : null;
             Tuple<byte[], byte[]> slot = new Tuple<byte[], byte[]>(left, right);
 
-            Storage.TryAdd(slotId, slot);
+            if (Storage.TryAdd(slotId, slot) == false)
+                Storage.TryUpdate(slotId, slot, existingSlot);
         }
 
         public void Delete()
